@@ -1,0 +1,38 @@
+{
+  "name": "foodie",
+  "version": "1.0.0",
+  "description": "A food delivery service application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomipaul/bc-20-food-delivery-service.git"
+  },
+  "keywords": [
+    "food",
+    "order",
+    "delivery",
+    "node.js",
+    "express",
+    "firebase",
+    "html",
+    "css",
+    "js",
+    "andela",
+    "bootcamp"
+  ],
+  "author": "Oluwatomi Paul Akande",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomipaul/bc-20-food-delivery-service/issues"
+  },
+  "homepage": "https://github.com/tomipaul/bc-20-food-delivery-service#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "firebase-admin": "^4.1.3"
+  }
+}
