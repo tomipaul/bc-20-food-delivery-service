@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const app = express();
 
-const serviceAccount = require(__dirname + '/foodie.json');
+const serviceAccount = require('./foodie.json');
 const adminApp = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://foodie-aa21d.firebaseio.com"
@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json()); 
 //verify token for every call to the api from client
 app.use('/api', (req, res, next) => {
+  // console.log(req.cookies.token);
   clientAuth.verifyIdToken(req.cookies.token).then((decodedToken) => {
     req.uid = decodedToken.uid;
     next();
@@ -112,24 +113,8 @@ app.get('/api/orders/:processed', (req, res) => {
   });
 });
 
-//After authentication on the client side, send user token to this endpoint
-//verify token and send back to the client as cookie.
-app.post('/verify/sendcookie', (req, res) => {
-  clientAuth.verifyIdToken(req.body.token).then((decodedToken) => {
-    if (req.body.uid === decodedToken.uid) {
-      let newDate = new Date();
-      newDate.setDate(newDate.getDate() + 30);
-      res.cookie('token', req.body.token, {httpOnly: true, expires: newDate});
-      return res.status(201).end();
-    }
-    else {
-      return res.status(401).end();
-    }
-  });
-});
-
-app.get('/', (req, res) => {
-  res.send('You are signed in');
+app.get('/foods/view', (req, res) => {
+  res.sendFile(__dirname + '/public/html/foodview.html');
 });
 
 app.get('/index', (req, res) => {
