@@ -19,10 +19,15 @@
 </head>
 <body>
   <header>
-    <img id = 'foodieLogo' src="images/foodie.png"></img>
+    <img id = 'foodieLogo' src="/images/foodie.png"></img>
     <span id = 'slogan'> ...hungry? have more!</span>
   </header>
   <div id = 'content'>
+    <div>
+      <input id = 'email' placeholder = "Enter email" type = 'text' required>
+      <input id = 'password' placeholder = "Enter password" type = 'password', required>
+      <input id = 'submit' onclick ='signUp()' type = 'submit'>
+    </div>
     <div id="firebaseui-auth-container"></div>
   </div>
   <footer>
