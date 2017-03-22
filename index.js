@@ -45,7 +45,7 @@ app.post('/api/food', (req, res) => {
 
 //modify a food item property
 app.put('/api/food/:foodId', (req, res) => {
-  clientDb.ref(`foodItems/${req.params.foodId`).update(req.body)
+  clientDb.ref(`foodItems/${req.params.foodId}`).update(req.body)
   .then(() => {
     return res.status(200).end();
   }, (error) => {
@@ -64,7 +64,7 @@ app.delete('/api/food/:foodId', (req, res) => {
 });
 
 //get all food items
-app.get('/api/all', (req, res) => {
+app.get('/api/food/all', (req, res) => {
   clientDb.ref('foodItems').once('value')
   .then((snapshot) => {
     return res.status(200).json(snapshot.val());
@@ -102,9 +102,9 @@ app.delete('/api/order/:orderId', (req, res) => {
   });
 });
 
-//get all pending orders
-app.get('/api/orders', (req, res) => {
-  clientDb.ref('orders').orderByChild('status').equalTo('pending').once('value')
+//get all pending or processed orders
+app.get('/api/orders/:processed', (req, res) => {
+  clientDb.ref('orders').orderByChild('status').equalTo(req.params.processed).once('value')
   .then((snapshot) => {
     return res.status(200).json(snapshot.val());
   }, (error) => {
