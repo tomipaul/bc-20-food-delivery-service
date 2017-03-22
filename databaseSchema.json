@@ -1,4 +1,9 @@
 {
+  "users": {
+    "userId": "admin/user",
+    "userId": "admin/user"
+  },
+
   "foodItems" : {
     "foodItemId": {
       "name": "***",
