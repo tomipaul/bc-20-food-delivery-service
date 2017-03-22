@@ -9,11 +9,23 @@ header {
 
 #content {
   position: absolute;
-  background-image: url('/images/foodTable.jpg');
+  background-image: url('/images/foodbg.jpg');
   top: 10%;
   left: 0;
   width: 100%;
   height: 80%;
+}
+
+#slogan {
+  position: relative;
+  float: right;
+  margin-right: 10px;
+  top: 45%;
+  font-family: cursive;
+  color: #b30000;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 18px;
 }
 
 footer {
