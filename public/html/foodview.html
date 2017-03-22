@@ -1,0 +1,41 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/css/foodview.css">
+  <link rel="stylesheet" type="text/css" href="/css/index.css">
+  <script src="https://www.gstatic.com/firebasejs/3.7.2/firebase.js"></script>
+  <script>
+  // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAOvCOGVr3nEQ7oBooEfWNud4mBi4kKBSI",
+      authDomain: "foodie-aa21d.firebaseapp.com",
+      databaseURL: "https://foodie-aa21d.firebaseio.com",
+      storageBucket: "foodie-aa21d.appspot.com",
+      messagingSenderId: "829728014658"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script type="text/javascript" src = "/js/foodview.js"></script>
+</head>
+<body>
+  <header>
+    <img id = 'foodieLogo' src="/images/foodie.png"></img>
+    <span id = 'slogan'> ...hungry? have more!</span>
+  </header>
+  <div id = "navbar">
+    <div id = "navbarflex">
+      <img src = "/images/plus.png" onclick = "displayAddFood()"></img>
+      <img src = "/images/bin.png"></img>
+    </div>
+  </div>
+  <div id = "foodsview">
+    <div id = "foods"></div>
+  </div>
+  <div id = "displayFormBg">
+    <div id = "displayForm">
+      <input id= 'name' type = 'text' placeholder="Enter food name" required>
+      Upload food image: <input id = "foodImage" type = 'file' required>
+      <input type = "submit", onclick = "addFood()" value = "Add"> 
+    </div>
+  </div>
+</body>
+</html>
