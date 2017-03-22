@@ -16,12 +16,14 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
-
+//serves static files
 app.use(express.static(__dirname + '/public'));
+//parse cookies sent from client
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({'extended':'true'})); //parse application/x-www-form-urlencoded
-app.use(bodyParser.json()); //parse application/json
-
+//parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({'extended':'true'})); 
+//parse application/json
+app.use(bodyParser.json()); 
 //verify token for every call to the api from client
 app.use('/api', (req, res, next) => {
   clientAuth.verifyIdToken(req.cookies.token).then((decodedToken) => {
@@ -29,6 +31,84 @@ app.use('/api', (req, res, next) => {
     next();
   }, (error) => {
     return res.status(401).end();
+  });
+});
+
+//add a food item
+app.post('/api/food', (req, res) => {
+  clientDb.ref("foodItems").push(req.body).then(() => {
+    return res.status(201).json(req.body);
+  }, (error) => {
+    return res.status(500).send(error);
+  });
+});
+
+//modify a food item property
+app.put('/api/food/:foodId', (req, res) => {
+  clientDb.ref(`foodItems/${req.params.foodId`).update(req.body)
+  .then(() => {
+    return res.status(200).end();
+  }, (error) => {
+    return res.status(500).send(error);
+  });
+});
+
+//delete a food item
+app.delete('/api/food/:foodId', (req, res) => {
+  clientDb.ref(`foodItems/${req.params.foodId}`).remove()
+  .then(() => {
+    return res.status(204).end();
+  }, (error) => {
+    return res.status(500).send(error);
+  });
+});
+
+//get all food items
+app.get('/api/all', (req, res) => {
+  clientDb.ref('foodItems').once('value')
+  .then((snapshot) => {
+    return res.status(200).json(snapshot.val());
+  }, (error) => {
+    return res.status(500).send(error);
+  });
+});
+
+//create a new order
+app.post('/api/order', (req, res) => {
+  clientDb.ref('orders').push(req.body).then(() => {
+    return res.status(201).json(req.body);
+  }, (error) => {
+    return res.status(500).send(error);
+  });
+});
+
+//edit an order
+app.put('/api/order/:orderId', (req, res) => {
+  clientDb.ref(`orders/${req.params.orderId}`).update(req.body)
+  .then(() => {
+    return res.status(200).end();
+  }, (error) => {
+    return res.status(500).send(error);
+  });
+});
+
+//delete an order
+app.delete('/api/order/:orderId', (req, res) => {
+  clientDb.ref(`orders/${req.params.orderId}`).remove()
+  .then(() => {
+    return res.status(204).end();
+  }, (error) => {
+    return res.status(500).send(error);
+  });
+});
+
+//get all pending orders
+app.get('/api/orders', (req, res) => {
+  clientDb.ref('orders').orderByChild('status').equalTo('pending').once('value')
+  .then((snapshot) => {
+    return res.status(200).json(snapshot.val());
+  }, (error) => {
+    return res.status(500).send(error);
   });
 });
 
