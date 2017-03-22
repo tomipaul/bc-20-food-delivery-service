@@ -1,0 +1,25 @@
+<html>
+<head>
+  <script src="https://www.gstatic.com/firebasejs/3.7.2/firebase.js"></script>
+  <script>
+  // Initialize Firebase
+    const config = {
+      apiKey: "AIzaSyAOvCOGVr3nEQ7oBooEfWNud4mBi4kKBSI",
+      authDomain: "foodie-aa21d.firebaseapp.com",
+      databaseURL: "https://foodie-aa21d.firebaseio.com",
+      storageBucket: "foodie-aa21d.appspot.com",
+      messagingSenderId: "829728014658"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.css"/>
+  <script type="text/javascript" src="/js/index.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Welcome to My Awesome App</h1>
+  </header>
+  <div id="firebaseui-auth-container"></div>
+</body>
+</html>
