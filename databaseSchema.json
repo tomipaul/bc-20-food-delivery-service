@@ -1,14 +1,14 @@
 {
   "users": {
-    "userId": "admin/user",
-    "userId": "admin/user"
+    "userId": "true/false",
+    "userId": "true/false"
   },
 
   "foodItems" : {
     "foodItemId": {
       "name": "***",
       "available": false,
-      "foodImg": "***"
+      "foodImg": "firebaseStorageReference"
     },
     "foodItemId": {},
     "foodItemId": {}
@@ -19,7 +19,7 @@
       "foodItem": "foodItemId.name",
       "user": "user.displayName",
       "quantity": "***",
-      "status": "pending/done"
+      "processed": "true/false"
     },
     "orderId": {},
     "orderId": {}
