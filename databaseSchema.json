@@ -1,0 +1,22 @@
+{
+  "foodItems" : {
+    "foodItemId": {
+      "name": "***",
+      "available": false,
+      "foodImg": "***"
+    },
+    "foodItemId": {},
+    "foodItemId": {}
+  },
+
+  "orders": {
+    "orderId": {
+      "foodItem": "foodItemId.name",
+      "user": "user.displayName",
+      "quantity": "***",
+      "status": "pending/done"
+    },
+    "orderId": {},
+    "orderId": {}
+  }
+}
