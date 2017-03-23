@@ -31,7 +31,8 @@ app.use('/api', (req, res, next) => {
     req.uid = decodedToken.uid;
     next();
   }, (error) => {
-    return res.status(401).end();
+    res.clearCookie('token', {path: '/'});
+    return res.redirect('/');
   });
 });
 
@@ -113,10 +114,33 @@ app.get('/api/orders/:processed', (req, res) => {
   });
 });
 
-app.get('/foods/view', (req, res) => {
+app.get('/user/:userid/:admin', (req, res) => {
+  clientDb.ref(`users/${req.params.userid}`).set(req.params.admin, (error) => {
+    if (error) {
+      return res.status(500).send(error);
+    }
+    else {
+      return res.status(200).end();
+    }
+  });
+});
+
+app.get('/user/:userid', (req, res) => {
+  clientDb.ref(`users/${req.params.userid}`).once("value")
+  .then((snapshot) => {
+    if (snapshot.val()) {
+      return res.status(200).json(snapshot.val());
+    }
+    else {
+      return res.status(500).json(snapshot.val())
+    }
+  });
+});
+
+app.get('/foods', (req, res) => {
   res.sendFile(__dirname + '/public/html/foodview.html');
 });
 
-app.get('/index', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/html/index.html');
 });
