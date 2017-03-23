@@ -1,9 +1,8 @@
 var uiConfig = {
-  signInSuccessUrl: '/foods/view',
+  signInSuccessUrl: '/foods',
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-    firebase.auth.EmailAuthProvider.PROVIDER_ID
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID
   ],
   // Terms of service url.
   tosUrl: '/'
@@ -22,6 +21,28 @@ function signUp() {
   let email = document.getElementById('email').value;
   let password = document.getElementById('password').value;
   firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
+    const req = new XMLHttpRequest();
+    const uri = `/user/${user.uid}/false`;
+    req.open('GET', uri, true);
+    req.responseType = "json";
+    req.send();
+    req.onload = () => {
+      if (req.status === 500) {
+        alert("Sign-Up failure. Please try again!");
+      }
+      else {
+        user.getToken().then((token) => {
+          createTokenCookie(token);
+        });
+      }
+    }
+  });
+}
+
+function logIn() {
+  let email = document.getElementById('email').value;
+  let password = document.getElementById('password').value;
+  firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
     user.getToken().then((token) => {
       createTokenCookie(token);
     });
@@ -32,11 +53,12 @@ function checkAuthState() {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       if (document.cookie.includes('token')) {
-        location.assign("/foods/view");
+        location.assign("/foods");
       }
       else {
         user.getToken().then((token) => {
           createTokenCookie(token);
+          location.assign("/foods");
         });
       }
     }
