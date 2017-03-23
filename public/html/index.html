@@ -23,10 +23,11 @@
     <span id = 'slogan'> ...hungry? have more!</span>
   </header>
   <div id = 'content'>
-    <div>
+    <div id = 'email-auth-container'>
       <input id = 'email' placeholder = "Enter email" type = 'text' required>
       <input id = 'password' placeholder = "Enter password" type = 'password', required>
-      <input id = 'submit' onclick ='signUp()' type = 'submit'>
+      <input onclick ='signUp()' type = 'submit' value = 'Sign Up'>
+      <input onclick = 'logIn()' type = 'submit' value = 'Log In'>
     </div>
     <div id="firebaseui-auth-container"></div>
   </div>
