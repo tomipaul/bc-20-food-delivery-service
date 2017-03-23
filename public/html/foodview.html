@@ -14,6 +14,7 @@
     };
     firebase.initializeApp(config);
   </script>
+  <script type="text/javascript" src="/js/auth.js"></script>
   <script type="text/javascript" src = "/js/foodview.js"></script>
 </head>
 <body>
@@ -23,18 +24,27 @@
   </header>
   <div id = "navbar">
     <div id = "navbarflex">
-      <img src = "/images/plus.png" onclick = "displayAddFood()"></img>
-      <img src = "/images/bin.png"></img>
+      <img src = "/images/plus.png" class = "hide-elem" onclick ="showPrompt('displayFoodForm')"></img>
+      <img src = "/images/bin.png" class = "hide-elem"></img>
+      <img src = "/images/logout.png" onclick = "logOut()"></img>
     </div>
   </div>
   <div id = "foodsview">
     <div id = "foods"></div>
   </div>
   <div id = "displayFormBg">
-    <div id = "displayForm">
+    <div id = "displayFoodForm">
       <input id= 'name' type = 'text' placeholder="Enter food name" required>
       Upload food image: <input id = "foodImage" type = 'file' required>
-      <input type = "submit", onclick = "addFood()" value = "Add"> 
+      <input id= "submitFoodInfo" type = "submit" value = "Add"> 
+    </div>
+    <div id = "displayOrderForm">
+      <input id= 'foodname' type = 'text' required>
+      <input id = "foodquantity" type = 'text' placeholder="How many servings?" required>
+      <input id= 'deliveryaddress' type = 'text' placeholder="Address" required>
+      <input id= 'customername' type = 'text' placeholder="Deliver To..." required>
+      <input id= "submitOrdersInfo" type = "submit" value = "Order">
+      <input id= "cancelorder" type = "submit" value = "Cancel">
     </div>
   </div>
 </body>
