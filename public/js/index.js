@@ -33,31 +33,6 @@ function signUp() {
       else {
         user.getToken().then((token) => {
           createTokenCookie(token);
-        });
-      }
-    }
-  });
-}
-
-function logIn() {
-  let email = document.getElementById('email').value;
-  let password = document.getElementById('password').value;
-  firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
-    user.getToken().then((token) => {
-      createTokenCookie(token);
-    });
-  });
-}
-
-function checkAuthState() {
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      if (document.cookie.includes('token')) {
-        location.assign("/foods");
-      }
-      else {
-        user.getToken().then((token) => {
-          createTokenCookie(token);
           location.assign("/foods");
         });
       }
@@ -65,6 +40,24 @@ function checkAuthState() {
   });
 }
 
-window.addEventListener('load', () => {
-  checkAuthState();
-});
+function checkLoginParams(verifyParams) {
+  let email = document.getElementById('email').value;
+  let password = document.getElementById('password').value;
+  if (!email || !password) {
+    alert("Email and Password cannot be empty");
+  }
+  else {
+    return verifyParams(email, password);
+  }
+}
+
+function logIn() {
+  checkLoginParams((email, password) => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
+      user.getToken().then((token) => {
+        createTokenCookie(token);
+        location.assign('/foods');
+      });
+    });
+  });
+}
