@@ -106,8 +106,9 @@ app.delete('/api/order/:orderId', (req, res) => {
 
 //get all pending or processed orders
 app.get('/api/orders/:processed', (req, res) => {
-  clientDb.ref('orders').orderByChild('status').equalTo(req.params.processed).once('value')
+  clientDb.ref('orders').orderByChild('processed').equalTo(req.params.processed).once('value')
   .then((snapshot) => {
+    console.log(snapshot.val());
     return res.status(200).json(snapshot.val());
   }, (error) => {
     return res.status(500).send(error);
@@ -128,11 +129,11 @@ app.get('/user/:userid/:admin', (req, res) => {
 app.get('/user/:userid', (req, res) => {
   clientDb.ref(`users/${req.params.userid}`).once("value")
   .then((snapshot) => {
-    if (snapshot.val()) {
-      return res.status(200).json(snapshot.val());
+    if (snapshot.val() === 'true') {
+      return res.status(200).json(true);
     }
     else {
-      return res.status(500).json(snapshot.val())
+      return res.status(200).json(false);
     }
   });
 });
@@ -141,6 +142,6 @@ app.get('/foods', (req, res) => {
   res.sendFile(__dirname + '/public/html/foodview.html');
 });
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(__dirname + '/public/html/index.html');
-});
+})
