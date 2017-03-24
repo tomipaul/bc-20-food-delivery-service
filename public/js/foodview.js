@@ -45,6 +45,50 @@ function addFood(cb) {
   });
 }
 
+function getAllOrders(cb) {
+  const req = new XMLHttpRequest();
+  const uri = '/api/orders/false';
+  req.open('GET', uri, true);
+  req.responseType = "json";
+  req.send();
+  req.onload = () => {
+    if (req.status === 500) {
+      return cb(false);
+    }
+    return cb(req.response);
+  }
+}
+
+function displayOrders(orders) {
+  console.log(orders);
+  for (const orderId in orders) {
+    let orderDiv = 
+    displayOrder(orders[orderId]);
+  }
+}
+
+function displayOrder(order) {
+  let orderRow = document.createElement('tr');
+  orderRow.classList.add('orderRow');
+  for (let dataId in order) {
+    let orderCell = document.createElement('td');
+    orderCell.classList.add('orderdatacell');
+    if (dataId === 'processed') {
+      let processOrder = document.createElement('input');
+      processOrder.type = 'checkbox';
+      processOrder.id = 'processorder';
+      orderCell.appendChild(processOrder);
+    }
+    else {
+      let data = order[dataId];
+      console.log(data);
+      orderCell.textContent = data;
+    }
+    orderRow.appendChild(orderCell);
+  }
+  document.getElementById('orderTable').appendChild(orderRow);
+}
+
 function showPrompt(elemId) {
   let state = document.getElementById(elemId).style.display;
   if (state === "block") {
@@ -84,7 +128,7 @@ function displayFood(food) {
   foodDiv.appendChild(foodName);
   if (food.available) {
     orderImg.src = "/images/cart.png";
-    orderImg.id = "orderImg";
+    orderImg.className = "orderImg";
     orderImg.foodName = food.name;
     foodDiv.appendChild(orderImg);
   }
@@ -112,7 +156,7 @@ function makeOrder(cb) {
     quantity: foodQuantity,
     address: deliveryAddress,
     deliverTo: customerName,
-    processed: false
+    processed: 'false'
   };
   req.setRequestHeader("Content-type", "application/json");
   req.send(JSON.stringify(data));
@@ -131,13 +175,48 @@ function logOut() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-  event.preventDefault();
+function getDisplayFoods() {
   getAllFoods((response) => {
     if (response) {
       displayFoods(response);
     }
   });
+}
+
+function getDisplayOrders() {
+  getAllOrders((orders) => {
+    displayOrders(orders);
+  });
+}
+
+function hideDisplayElem(elemIds, elemClass=false) {
+  for (const elemId of elemIds) {
+    document.getElementById(elemId).style.display = 'none';
+  }
+  if (elemClass) {
+    const elementList = document.getElementsByClassName(elemClass);
+    for (let elem = 0; elem < elementList.length; elem++) {
+      elementList.item(elem).style.display = 'none';
+    }
+  }
+}
+
+function unHideDisplayElem(elemIds, elemClass=false) {
+  for (const elemId of elemIds) {
+    document.getElementById(elemId).style.display = 'block';
+  }
+  if (elemClass) {
+    const elementList = document.getElementsByClassName(elemClass);
+    for (let elem = 0; elem < elementList.length; elem++) {
+      elementList.item(elem).style.display = 'block';
+    } 
+  }
+}
+
+window.addEventListener('load', (event) => {
+  event.preventDefault();
+  getDisplayFoods();
+  getDisplayOrders();
 
   document.getElementById("submitFoodInfo").addEventListener('click', (event) => {
     event.preventDefault();
@@ -149,7 +228,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   document.getElementById("foods").addEventListener('click', (event) => {
     event.preventDefault();
-    if (event.target && event.target.id === "orderImg") {
+    if (event.target && event.target.className === "orderImg") {
       document.getElementById("foodname").value = event.target.foodName;
       document.getElementById("foodname").disabled = true;
       showPrompt("displayOrderForm");
@@ -169,23 +248,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   });
 
-  window.addEventListener('load', (event)=>{
+  document.getElementById("cancelorder").addEventListener('click', (event) => {
     event.preventDefault();
-    const uid = firebase.auth().currentUser.uid;
-    const req = new XMLHttpRequest();
-    const uri = `/user/${uid}/false`;
-    req.open('GET', uri, true);
-    req.responseType = "json";
-    req.send();
-    req.onload = () => {
-      if (!req.response) {
-        alert("Error checking user status. Please try again!");
+    showPrompt("displayOrderForm");
+  });
+
+  document.getElementById("cancelfood").addEventListener('click', (event) => {
+    event.preventDefault();
+    showPrompt("displayFoodForm");
+  });
+
+  document.getElementById("orderclick").addEventListener('click', (event) => {
+    event.preventDefault();
+    hideDisplayElem(['foodsview', 'plus', 'bin']);
+    unHideDisplayElem(['ordersview']);
+  });
+
+  document.getElementById("foodclick").addEventListener('click', (event) => {
+    event.preventDefault();
+    hideDisplayElem(['ordersview']);
+    unHideDisplayElem(['foodsview', 'plus', 'bin']);
+  });
+});
+
+window.addEventListener('load', (event) => {
+  event.preventDefault();
+  checkUserState((user) => {
+    checkUserStatus(user, (isAdmin) => {
+      if (isAdmin) {
+        hideDisplayElem([], 'orderImg');
       }
       else {
-        document.getElementsByClassName("hide-elem").forEach((elem) => {
-          elem.classList.remove("hide-elem");
-        });
+        hideDisplayElem(['bin', 'plus', 'foodclick', 'orderclick']);
       }
-    }
+    });
   });
 });

@@ -24,19 +24,36 @@
   </header>
   <div id = "navbar">
     <div id = "navbarflex">
-      <img src = "/images/plus.png" class = "hide-elem" onclick ="showPrompt('displayFoodForm')"></img>
-      <img src = "/images/bin.png" class = "hide-elem"></img>
+      <img id = 'plus' src = "/images/plus.png" onclick ="showPrompt('displayFoodForm')"></img>
+      <img id = 'bin' src = "/images/bin.png"></img>
       <img src = "/images/logout.png" onclick = "logOut()"></img>
     </div>
+    <div id = "navbarflexmenu">
+      <span id = 'orderclick'>ORDER VIEW</span>
+      <span id = 'foodclick'>FOOD VIEW</span>
+    </div>
   </div>
-  <div id = "foodsview">
+  <div id = "foodsview" class ="r1">
     <div id = "foods"></div>
+  </div>
+  <div id = "ordersview" class="r2">
+    <div id = "orders">
+      <table id = "orderTable">
+        <th id = 'foodItem'>Address</th>
+        <th id = 'userEmail'>Deliver To</th>
+        <th id = 'quantity'>Food Item</th>
+        <th id = 'address'>Processed</th>
+        <th id = 'deliverTo'>Quantity</th>
+        <th id = 'processed'>User Email</th>
+      </table>
+    </div>
   </div>
   <div id = "displayFormBg">
     <div id = "displayFoodForm">
       <input id= 'name' type = 'text' placeholder="Enter food name" required>
       Upload food image: <input id = "foodImage" type = 'file' required>
-      <input id= "submitFoodInfo" type = "submit" value = "Add"> 
+      <input id= "submitFoodInfo" type = "submit" value = "Add">
+      <input id= "cancelfood" type = "submit" value = "Cancel"> 
     </div>
     <div id = "displayOrderForm">
       <input id= 'foodname' type = 'text' required>
