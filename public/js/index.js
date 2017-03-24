@@ -61,3 +61,11 @@ function logIn() {
     });
   });
 }
+
+window.addEventListener('load', () => {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user && document.cookie.includes('token')) {
+      location.assign('/foods');
+    }
+  });
+});

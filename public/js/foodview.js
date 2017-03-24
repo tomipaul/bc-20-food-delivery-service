@@ -60,14 +60,12 @@ function getAllOrders(cb) {
 }
 
 function displayOrders(orders) {
-  console.log(orders);
   for (const orderId in orders) {
-    let orderDiv = 
-    displayOrder(orders[orderId]);
+    displayOrder(orderId, orders[orderId]);
   }
 }
 
-function displayOrder(order) {
+function displayOrder(orderId, order) {
   let orderRow = document.createElement('tr');
   orderRow.classList.add('orderRow');
   for (let dataId in order) {
@@ -84,6 +82,7 @@ function displayOrder(order) {
       console.log(data);
       orderCell.textContent = data;
     }
+    orderRow.orderId = orderId;
     orderRow.appendChild(orderCell);
   }
   document.getElementById('orderTable').appendChild(orderRow);
@@ -173,6 +172,19 @@ function logOut() {
   .then(() => {
     document.cookie = `token=''; expires=''; path=\/`;
   });
+}
+
+function processOrder() {
+  const req = new XMLHttpRequest();
+  const uri = `/api/order/${orderId}`;
+  req.open('PUT', uri, true);
+  req.send();
+  req.onload = () => {
+    if (req.status === 500) {
+      return cb(false);
+    }
+    return cb(true);
+  }
 }
 
 function getDisplayFoods() {
@@ -279,7 +291,7 @@ window.addEventListener('load', (event) => {
         hideDisplayElem([], 'orderImg');
       }
       else {
-        hideDisplayElem(['bin', 'plus', 'foodclick', 'orderclick']);
+        hideDisplayElem(['bin', 'plus', 'foodclick', 'orderclick', 'useradd']);
       }
     });
   });

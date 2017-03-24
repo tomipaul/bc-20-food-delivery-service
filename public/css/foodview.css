@@ -123,7 +123,7 @@
   color: #004466;
 }
 
-#foodclick:hover, #orderclick:hover{
+#foodclick:hover, #orderclick:hover, #useradd:hover{
   cursor: pointer;
   color: purple;
 }
